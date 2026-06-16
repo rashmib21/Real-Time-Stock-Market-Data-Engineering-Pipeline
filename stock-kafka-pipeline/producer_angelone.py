@@ -52,6 +52,9 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
     print(f"Sent: {event['symbol']} | LTP={event['ltp']}")
 
 
+def on_error(ws, error):
+	print(f"Error: {error}")
+
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
     sws = SmartWebSocketV2(
