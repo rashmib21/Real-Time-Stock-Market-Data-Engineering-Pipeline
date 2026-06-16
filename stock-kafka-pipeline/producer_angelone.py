@@ -25,13 +25,28 @@ def get_auth_tokens():
 	feed=smart.getfeedToken() #The feed token is a separate shorter token specifically for the live data WebSocket. Without this token, the WebSocket will reject your connection
 	return jwt, feed
 
+def on_open(ws): #ws is the object for websocket, with the help of this object we can subscribe, unsubscribe, or close the connection 
+	print("Connected! Subscribing to stock feed..") #It confirms the our application is connected to Angel One's server
+	ws.subscribe( #Want live market data for specific stock, this is called subscription
+		"session1", #this is a correlation ID which is used as label for the subscription request
+		3, #this is subscription mode which gives more information about stock than just the last price
+		[{"exchangeType":1,"tokens":[17939]}]) #it defines send me the data of that token number stock for exchange type NSE
 
+def on_data(ws, message): #It automatic execute when the new data arrives, ws: current websocket connection and message is actual data received from Angel one 
+    print("DATA:", message)	
 
 
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
+    sws = SmartWebSocketV2(
+    auth_token=jwt,
+    api_key=API_KEY,
+    client_code=CLIENT_ID,
+    feed_token=feed
+)
+    sws.on_open = on_open
+    sws.connect()
 
 
-    
-    # print(jwt)
-    # print(feed)
+
+ 
