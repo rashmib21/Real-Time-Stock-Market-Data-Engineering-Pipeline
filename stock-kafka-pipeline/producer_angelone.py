@@ -55,6 +55,10 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
 def on_error(ws, error):
 	print(f"Error: {error}")
 
+def on_close(ws):
+	print("Connection closed!")
+
+
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
     sws = SmartWebSocketV2(
