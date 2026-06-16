@@ -14,20 +14,22 @@ producer=KafkaProducer(
 	bootstrap_servers=KAFKA_BROKER, #bootstrap means this is the first address the producer connects to Kafka i.e. localhost:9092 
 	value_serializer=json_serializer)
 
+sws = None
+
 def get_auth_tokens():
 	smart=SmartConnect(api_key=API_KEY)
 	totp=pyotp.TOTP(TOTP_SECRET).now()  #generate OTP of 6 digits right before login
 	print("6-digit generated OTP: ",totp)
 	data=smart.generateSession(CLIENT_ID, PASSWORD, totp) #We send our ID, password, otp to Angel One's Server and the server sends a response with our tokens to authorize us.
 	print(data)
-	jwt=data['data']['jwtToken'] #Websocket needs this token for authentication and live stock ticks
+	jwt=data['data']['jwtToken'].replace("Bearer ", "") #Websocket needs this token for authentication and live stock ticks
 	# print(jwt)
 	feed=smart.getfeedToken() #The feed token is a separate shorter token specifically for the live data WebSocket. Without this token, the WebSocket will reject your connection
 	return jwt, feed
 
 def on_open(ws): #ws is the object for websocket, with the help of this object we can subscribe, unsubscribe, or close the connection 
 	print("Connected! Subscribing to stock feed..") #It confirms the our application is connected to Angel One's server
-	ws.subscribe( #Want live market data for specific stock, this is called subscription
+	sws.subscribe( #Want live market data for specific stock, this is called subscription
 		"session1", #this is a correlation ID which is used as label for the subscription request
 		3, #this is subscription mode which gives more information about stock than just the last price
 		[{"exchangeType":1,"tokens":[17939]}]) #it defines send me the data of that token number stock for exchange type NSE
@@ -55,38 +57,38 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
 def on_error(ws, error):
 	print(f"Error: {error}")
 
-def on_close(ws):
-	print("Connection closed!")
+def on_close(ws, *args):
+	print("Connection closed! args={args}")
 
 
 def start():
+	global sws
 	while True:
 		try: 
 			jwt, feed=get_auth_tokens()
-			ws=SmartWebSocketV2(jwt, API_KEY, CLIENT_ID, feed)
-			ws.on_open=on_open
-			ws.on_data=on_data
-			ws.on_error=on_error
-			ws.on_close=on_close
-			ws.connect()
+			sws=SmartWebSocketV2(jwt, API_KEY, CLIENT_ID, feed)
+			sws.on_open=on_open
+			sws.on_data=on_data
+			sws.on_error=on_error
+			sws.on_close=on_close
+			sws.connect()
 
 		except Exception as e:
 			print(f"Disconnected: {e}. Retrying in 5s...")
 			time.sleep(5)
 
-start()
 
 if __name__ == "__main__":
-    jwt, feed = get_auth_tokens()
-    sws = SmartWebSocketV2(
-    auth_token=jwt,
-    api_key=API_KEY,
-    client_code=CLIENT_ID,
-    feed_token=feed
-)
-    sws.on_open = on_open
-    sws.connect()
+#     jwt, feed = get_auth_tokens()
+#     sws = SmartWebSocketV2(
+#     auth_token=jwt,
+#     api_key=API_KEY,
+#     client_code=CLIENT_ID,
+#     feed_token=feed
+# )
+#     sws.on_open = on_open
+#     sws.connect()
 
-
+    start()
 
  
