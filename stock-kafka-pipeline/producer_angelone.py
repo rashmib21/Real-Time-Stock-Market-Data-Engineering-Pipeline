@@ -59,6 +59,14 @@ def on_close(ws):
 	print("Connection closed!")
 
 
+def start():
+	while True:
+		try: 
+			jwt, feed=get_auth_tokens()
+			ws=SmartWebSocketV2(jwt, API_KEY, CLIENT_ID, feed)
+				
+
+
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
     sws = SmartWebSocketV2(
