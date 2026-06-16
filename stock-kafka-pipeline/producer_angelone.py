@@ -45,6 +45,10 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
     "timestamp":message.get("exchange_timestamp")
     }	
 
+    producer.send(KAFKA_TOPIC, key=b 'HINDCOPPER', value=event)
+    producer.flush()
+    print(f"Sent: {event['symbol']} | LTP={event['ltp']}")
+
 
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
