@@ -64,8 +64,17 @@ def start():
 		try: 
 			jwt, feed=get_auth_tokens()
 			ws=SmartWebSocketV2(jwt, API_KEY, CLIENT_ID, feed)
-				
+			ws.on_open=on_open
+			ws.on_data=on_data
+			ws.on_error=on_error
+			ws.on_close=on_close
+			ws.connect()
 
+		except Exception as e:
+			print(f"Disconnected: {e}. Retrying in 5s...")
+			time.sleep(5)
+
+start()
 
 if __name__ == "__main__":
     jwt, feed = get_auth_tokens()
