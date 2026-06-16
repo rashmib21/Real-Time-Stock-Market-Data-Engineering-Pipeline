@@ -33,7 +33,17 @@ def on_open(ws): #ws is the object for websocket, with the help of this object w
 		[{"exchangeType":1,"tokens":[17939]}]) #it defines send me the data of that token number stock for exchange type NSE
 
 def on_data(ws, message): #It automatic execute when the new data arrives, ws: current websocket connection and message is actual data received from Angel one 
-    print("DATA:", message)	
+    # print("DATA:", message)
+    event={
+    "symbol":"HINDCOPPER",
+    "ltp":message.get("last_traded_price",0)/100,
+    "open":message.get("open_price_of_the_day",0)/100,
+    "high":message.get("high_price_of_the_day",0)/100,
+    "low":message.get("low_price_of_the_day",0)/100,
+    "close":message.get("close_price",0)/100,
+    "volume":message.get("volume_trade_of_the_day",0)/100,
+    "timestamp":message.get("exchange_timestamp")
+    }	
 
 
 if __name__ == "__main__":
