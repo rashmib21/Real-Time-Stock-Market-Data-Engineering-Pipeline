@@ -36,8 +36,8 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
     # print("DATA:", message)
     event={
     "symbol":"HINDCOPPER",
-    "ltp":message.get("last_traded_price",0)/100,
-    "open":message.get("open_price_of_the_day",0)/100,
+    "ltp":message.get("last_traded_price",0)/100,  #.get() safely reads a key from the dictionary, 0 is default if the key is missing for any reason, returns 0 instead of crashing
+    "open":message.get("open_price_of_the_day",0)/100, #Divide by 100 as Angel One return th value in paisa
     "high":message.get("high_price_of_the_day",0)/100,
     "low":message.get("low_price_of_the_day",0)/100,
     "close":message.get("close_price",0)/100,
@@ -45,8 +45,10 @@ def on_data(ws, message): #It automatic execute when the new data arrives, ws: c
     "timestamp":message.get("exchange_timestamp")
     }	
 
-    producer.send(KAFKA_TOPIC, key=b 'HINDCOPPER', value=event)
-    producer.flush()
+    producer.send(KAFKA_TOPIC, key=b'HINDCOPPER', value=event) #the event dictionary is send to KAFKA_TOPIC is 'stock-ohlcv', key is the message key in Bytes, 
+    #kafka uses this key to decide which partition the message goes to, value=event is the actual data - our serializer converts it to bytes automarically.
+    #Same key always goes to same partition, keep data ordered
+    producer.flush() #flush forces to send everything immediately in the batch to the broker, without flush we have to wait and the message is still in the buffer
     print(f"Sent: {event['symbol']} | LTP={event['ltp']}")
 
 
