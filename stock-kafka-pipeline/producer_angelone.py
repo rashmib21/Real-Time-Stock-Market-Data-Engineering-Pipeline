@@ -5,6 +5,8 @@ from SmartApi import SmartConnect
 from SmartApi.smartWebSocketV2 import SmartWebSocketV2
 from kafka import KafkaProducer
 from config import *
+import datetime
+
 
 
 def json_serializer(value):
@@ -28,6 +30,7 @@ def get_auth_tokens():
 	return jwt, feed
 
 def on_open(ws): #ws is the object for websocket, with the help of this object we can subscribe, unsubscribe, or close the connection 
+	
 	print("Connected! Subscribing to stock feed..") #It confirms the our application is connected to Angel One's server
 	sws.subscribe( #Want live market data for specific stock, this is called subscription
 		"session1", #this is a correlation ID which is used as label for the subscription request
@@ -36,16 +39,22 @@ def on_open(ws): #ws is the object for websocket, with the help of this object w
 
 def on_data(ws, message): #It automatic execute when the new data arrives, ws: current websocket connection and message is actual data received from Angel one 
     # print("DATA:", message)
+    # print("RAW:", message)   	
+
+    raw_ts = message.get("exchange_timestamp")
+    readable_ts = datetime.datetime.fromtimestamp(raw_ts / 1000).strftime('%Y-%m-%d %H:%M:%S') if raw_ts else None
+
     event={
     "symbol":"HINDCOPPER",
     "ltp":message.get("last_traded_price",0)/100,  #.get() safely reads a key from the dictionary, 0 is default if the key is missing for any reason, returns 0 instead of crashing
     "open":message.get("open_price_of_the_day",0)/100, #Divide by 100 as Angel One return th value in paisa
     "high":message.get("high_price_of_the_day",0)/100,
     "low":message.get("low_price_of_the_day",0)/100,
-    "close":message.get("close_price",0)/100,
-    "volume":message.get("volume_trade_of_the_day",0)/100,
-    "timestamp":message.get("exchange_timestamp")
-    }	
+    "close":message.get("closed_price",0)/100,
+    "volume":message.get("volume_trade_for_the_day",0),
+    "timestamp": readable_ts
+    }
+    # print("EVENT BEING SENT:", event)   	
 
     producer.send(KAFKA_TOPIC, key=b'HINDCOPPER', value=event) #the event dictionary is send to KAFKA_TOPIC is 'stock-ohlcv', key is the message key in Bytes, 
     #kafka uses this key to decide which partition the message goes to, value=event is the actual data - our serializer converts it to bytes automarically.
