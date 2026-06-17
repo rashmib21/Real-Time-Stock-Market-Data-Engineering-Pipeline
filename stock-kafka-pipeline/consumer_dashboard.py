@@ -3,6 +3,8 @@ import json
 from config import KAFKA_BROKER, KAFKA_TOPIC
 from colorama import init, Fore, Style #for making dashboard colorful
 
+init(autoreset=True) #resets color after every print automatically
+
 def deserializer(v):
 	return json.loads(v.decode('utf-8'))
  
