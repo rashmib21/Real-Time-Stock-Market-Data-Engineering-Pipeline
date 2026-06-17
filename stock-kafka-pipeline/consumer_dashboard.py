@@ -1,6 +1,7 @@
 from kafka import KafkaConsumer
 import json
 from config import KAFKA_BROKER, KAFKA_TOPIC
+from colorama import init, Fore, Style #for making dashboard colorful
 
 def deserializer(v):
 	return json.loads(v.decode('utf-8'))
