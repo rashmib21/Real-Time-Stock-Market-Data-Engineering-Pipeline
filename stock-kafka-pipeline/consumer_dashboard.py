@@ -18,10 +18,10 @@ consumer=KafkaConsumer(  #This creates consumer object and immediately connects 
 print("Dashboard consumer started. Waiting for data...")
 print("-"*50)
 
-for message in consumer:
-	data=message.value
+for message in consumer: #this loop will run continuously when a new messsage arrives in the topic, Kafka delivered the msg to this loop and it will store in message variable
+	data=message.value #message contains several values like key, partition, offset, topic name, we need only values of it
 	# print(type(data))
-	# print(data['symbol'])
+	# print(data['symbol']) #TypeError: byte indices must be integers or slices, not str 
 
 	print(f"Symbol: {data['symbol']}")
 	print(f"LTP: Rs.{data['ltp']:2f}")
@@ -29,7 +29,7 @@ for message in consumer:
 	print(f"High: Rs.{data['high']:2f}")
 	print(f"Low: Rs.{data['low']:2f}")
 	print(f"Close: Rs.{data['close']:2f}")
-	print(f"Volume: Rs.{data['volume']:2f}")
+	print(f"Volume: Rs.{data['volume']:,}")
 	print(f"Time: {data['timestamp']}")
 	print("-"*50)	
 
