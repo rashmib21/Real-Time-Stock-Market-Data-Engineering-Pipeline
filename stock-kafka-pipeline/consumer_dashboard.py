@@ -18,23 +18,28 @@ consumer=KafkaConsumer(  #This creates consumer object and immediately connects 
 	#before and has no saved position, start reading from the very first message which stored in the topic, if we write latest it will read only new messages
 		) 
 
-print("Dashboard consumer started. Waiting for data...")
-print("-"*50)
+print(Fore.CYAN+"Dashboard consumer started. Waiting for data..."+Style.RESET_ALL) #Fore: foreground colors
+print(Fore.CYAN+"-"*50+Style.RESET_ALL)
+
+last_ltp = None   # tracks previous price
 
 for message in consumer: #this loop will run continuously when a new messsage arrives in the topic, Kafka delivered the msg to this loop and it will store in message variable
 	data=message.value #message contains several values like key, partition, offset, topic name, we need only values of it
 	# print(type(data))
 	# print(data['symbol']) #TypeError: byte indices must be integers or slices, not str 
 
-	print(f"Symbol: {data['symbol']}")
-	print(f"LTP: Rs.{data['ltp']:2f}")
-	print(f"Open: Rs.{data['open']:2f}")
-	print(f"High: Rs.{data['high']:2f}")
-	print(f"Low: Rs.{data['low']:2f}")
-	print(f"Close: Rs.{data['close']:2f}")
-	print(f"Volume: Rs.{data['volume']:,}")
-	print(f"Time: {data['timestamp']}")
-	print("-"*50)	
+	print(Fore.YELLOW + f"Symbol : {data['symbol']}" + Style.RESET_ALL)
+	print(Fore.GREEN  + f"LTP    : Rs. {data['ltp']:.2f}" + Style.RESET_ALL)
+	print(Fore.WHITE  + f"Open   : Rs. {data['open']:.2f}" + Style.RESET_ALL)
+	print(Fore.WHITE  + f"High   : Rs. {data['high']:.2f}" + Style.RESET_ALL)
+	print(Fore.WHITE  + f"Low    : Rs. {data['low']:.2f}" + Style.RESET_ALL)
+	print(Fore.WHITE  + f"Close  : Rs. {data['close']:.2f}" + Style.RESET_ALL)
+	print(Fore.MAGENTA+ f"Volume : {data['volume']:,}" + Style.RESET_ALL)
+	print(Fore.BLUE   + f"Time   : {data['timestamp']}" + Style.RESET_ALL)
+	print(Fore.CYAN   + "-" * 50 + Style.RESET_ALL)
+
+
+
 
 
 
