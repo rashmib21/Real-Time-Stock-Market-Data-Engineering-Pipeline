@@ -11,4 +11,6 @@ consumer=KafkaConsumer(
 	bootstrap_servers=KAFKA_BROKER,
 	group_id='analytics-group',
 	value_deserializer=deserializer,
-	auto_offset_reset='earliest')
+	auto_offset_reset='earliest'
+	)
+price_window=deque(maxlen=5)
