@@ -9,3 +9,14 @@ conn=mysql.connnector.connect(
 	password='MYSQL_PASS',
 	database=MYSQL_DB
 	)
+cursor=conn.cursor()
+
+consumer=KafkaConsumer(
+	KAFKA_TOPIC,
+	bootstrap_servers=KAFKA_BROKER,
+	group_id='storage-group',
+	value_deserializer=deserializer,
+	auto_offset_reset='earliest'
+	)
+
+print('Storage consumer started. Writing to MYSQL...')
