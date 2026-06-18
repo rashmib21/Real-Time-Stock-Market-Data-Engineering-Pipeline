@@ -21,4 +21,10 @@ for message in consumer:
 	data=message.value
 	close=data['close']
 
-	
+	price_window.append(close)
+
+	if len(price_window)==5:
+		sma=sum(price_window)/len(price_window)  #Simple moving average
+		print(f"[ANALYTICS] {data['symbol']}")
+		print(f"Last 5 closes: {list(price_window)}")
+		print(f"5-period SMA: Rs. {sma:.2f}")
