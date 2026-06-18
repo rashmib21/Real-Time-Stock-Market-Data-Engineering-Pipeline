@@ -14,3 +14,11 @@ consumer=KafkaConsumer(
 	auto_offset_reset='earliest'
 	)
 price_window=deque(maxlen=5) #it creates an empty deque which can hold at most 5 items. When the 6th item is added the first old one is removed 
+
+
+print("Analytics consumer started...")
+for message in consumer:
+	data=message.value
+	close=data['close']
+
+	
