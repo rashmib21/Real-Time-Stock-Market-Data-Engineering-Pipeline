@@ -28,3 +28,6 @@ for message in consumer:
 		print(f"[ANALYTICS] {data['symbol']}")
 		print(f"Last 5 closes: {list(price_window)}")
 		print(f"5-period SMA: Rs. {sma:.2f}")
+	else:
+		remaining=5-len(price_window)
+		print(f"[ANALYTICS] Collecting data... need {remaining} more prices")	
