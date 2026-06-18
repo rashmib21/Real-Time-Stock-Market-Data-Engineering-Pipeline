@@ -22,4 +22,4 @@ MYSQL_DB = "stock_pipeline"
 # Stock settings
 STOCK_TOKEN = "17939"
 STOCK_SYMBOL = "HINDCOPPER"
-ALERT_PRICE = 650.0
+ALERT_PRICE = 600.0

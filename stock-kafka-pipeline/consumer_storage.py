@@ -3,10 +3,10 @@ import mysql.connector
 import json
 from config import *
 
-conn=mysql.connnector.connect(
-	host='MYSQL_HOST',
-	user='MYSQL_USER',
-	password='MYSQL_PASS',
+conn=mysql.connector.connect(
+	host=MYSQL_HOST,
+	user=MYSQL_USER,
+	password=MYSQL_PASS,
 	database=MYSQL_DB
 	)
 cursor=conn.cursor()
@@ -41,11 +41,10 @@ for message in consumer:
 		data['timestamp']
 		)		
 
-		try: 
-			cursor.execute(INSERT_SQL, values)
-			conn.commit()
-			print(f"[STORAGE] Saved: {d['symbol']} | LTP={d['ltp:.2f']}")
-
-		except Exception as e:
-			print(f"[STORAGE] DB error: {e}")
-			conn.rollback()	
+	try: 
+		cursor.execute(INSERT_SQL, values)
+		conn.commit()
+		print(f"[STORAGE] Saved: {data['symbol']} | LTP={data['ltp']:.2f}")
+	except Exception as e:
+		print(f"[STORAGE] DB error: {e}")
+		conn.rollback()	
