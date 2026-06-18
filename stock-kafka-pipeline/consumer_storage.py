@@ -11,6 +11,9 @@ conn=mysql.connnector.connect(
 	)
 cursor=conn.cursor()
 
+def deserializer(v):
+	return json.loads(v.decode('utf-8'))
+
 consumer=KafkaConsumer(
 	KAFKA_TOPIC,
 	bootstrap_servers=KAFKA_BROKER,
@@ -20,3 +23,4 @@ consumer=KafkaConsumer(
 	)
 
 print('Storage consumer started. Writing to MYSQL...')
+
