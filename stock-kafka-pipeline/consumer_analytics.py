@@ -19,9 +19,10 @@ price_window=deque(maxlen=5) #it creates an empty deque which can hold at most 5
 print("Analytics consumer started...")
 for message in consumer:
 	data=message.value
-	close=data['close']
+	# print(data)
+	ltp=data['ltp']
 
-	price_window.append(close)
+	price_window.append(ltp)
 
 	if len(price_window)==5:
 		sma=sum(price_window)/len(price_window)  #Simple moving average
