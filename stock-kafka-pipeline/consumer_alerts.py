@@ -16,3 +16,8 @@ consumer=KafkaConsumer(
 print(f"Alerts consumer started. Alter threshold: Rs. {ALERT_PRICE}")
 
 last_alert_state=None #this variable remembers whether the price was above or below the threshold in the previous tick
+
+for message in consumer:
+	data=message.value
+	ltp=data['ltp']
+	symbol=data['symbol']
