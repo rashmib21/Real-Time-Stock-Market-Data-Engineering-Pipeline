@@ -21,3 +21,21 @@ for message in consumer:
 	data=message.value
 	ltp=data['ltp']
 	symbol=data['symbol']
+
+	if ltp>ALERT_PRICE:
+		if last_alert_state!='above':
+			print("")
+			print(f"ALERT: {symbol} crossed above Rs. {ALERT_PRICE}")
+			print(f"Current price: Rs.{ltp:.2f}")
+			print("")
+			last_alert_state='above'
+	elif ltp<ALERT_PRICE:
+		if last_alert_state!='below':
+			print("")	
+			print(f"ALERT: {symbol} fell below Rs. {ALERT_PRICE}")
+			print(f"Current Price: Rs. {ltp:.2f}")
+			print("")
+			last_alert_state='below'
+
+	else:
+		print(f"[ALERTS] {symbol}=Rs. {ltp:.2f} (watching.....)")			
