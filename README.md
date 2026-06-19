@@ -66,3 +66,10 @@ Kafka delivers every message to every distinct consumer group. Using one shared 
 Reliability and data quality features
 
 
+Producer: acks='all' for guaranteed broker-side durability; automatic reconnect-with-retry loop on WebSocket disconnects
+Consumers: manual offset commits — Kafka offset only advances after successful downstream processing
+Data validation: incoming events are checked for missing fields, non-positive prices, negative volume, and logically impossible OHLC values (High < Low) before being persisted
+Market-hours gating: the storage consumer checks NSE trading hours (Mon–Fri, 9:15 AM–3:30 PM IST) before writing to MySQL; outside trading hours it reports the day's last traded price instead of writing duplicate post-market ticks
+Structured logging: all consumers log to pipeline.log with timestamps and severity levels (INFO/WARNING/ERROR) for post-hoc debugging
+
+
