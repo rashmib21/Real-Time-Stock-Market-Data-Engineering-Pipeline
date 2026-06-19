@@ -5,3 +5,5 @@ A fault-tolerant, real-time streaming pipeline that ingests live NSE stock marke
 Problem statement-
 Stock markets generate continuous, high-frequency tick data that must be processed without loss or duplication, distributed to multiple independent systems (dashboards, alerting, analytics, storage), and remain resilient to network failures, broker crashes, and bad/corrupt data — all while respecting real-world constraints like market trading hours.
 
+This project implements that pipeline end-to-end using Apache Kafka as the central nervous system, decoupling data ingestion from data consumption so that a failure in one consumer (e.g. storage) never affects another (e.g. live dashboard).
+
