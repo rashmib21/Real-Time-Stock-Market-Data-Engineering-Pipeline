@@ -41,6 +41,10 @@ for message in consumer:
 		data['volume'],
 		data['timestamp']
 		)		
+	if not is_market_open():
+		print(f"Market is closed. Today's last LTP for {data['symbol']} was Rs. {data['ltp']:.2f}")
+		consumer.commit()
+		continue
 
 	try: 
 		cursor.execute(INSERT_SQL, values)
