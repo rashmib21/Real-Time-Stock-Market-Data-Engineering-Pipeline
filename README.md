@@ -27,3 +27,5 @@ consumer   consumer      consumer        consumer
  prices)    moving avg)   threshold)      market-hours
                                            gated, data
                                            quality checked)
+
+Each consumer belongs to its own Kafka consumer group, so all four read every message independently — one consumer crashing or lagging never blocks or affects the others.
