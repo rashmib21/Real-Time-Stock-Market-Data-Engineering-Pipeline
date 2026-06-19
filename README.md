@@ -58,5 +58,8 @@ Why manual offset commits instead of auto-commit?
 Auto-commit marks a message as "processed" the moment it's received — even if the downstream write (e.g. to MySQL) fails afterward. Manual commit only advances the offset after the database write succeeds, so a crash mid-processing results in safe re-delivery instead of silent data loss.
 
 
+Why separate consumer groups per service?
+Kafka delivers every message to every distinct consumer group. Using one shared group across dashboard/analytics/alerts/storage would split messages between them (each missing data); separate group IDs ensure each service gets the complete stream.
+
 
 
