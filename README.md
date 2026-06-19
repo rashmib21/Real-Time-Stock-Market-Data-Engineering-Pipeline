@@ -39,3 +39,12 @@ Kafka client: kafka-python
 Database: MySQL
 Config management: python-dotenv (.env + config.py)
 Logging: Python logging module, file-based
+
+
+
+Key engineering decisions
+
+Why Kafka over direct API-to-DB writes?
+Decouples ingestion from processing. Four consumers can read the same stream independently without coordinating with each other or with the producer, and a slow/crashed consumer never blocks data flow to the others.
+
+
