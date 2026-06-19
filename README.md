@@ -48,3 +48,8 @@ Why Kafka over direct API-to-DB writes?
 Decouples ingestion from processing. Four consumers can read the same stream independently without coordinating with each other or with the producer, and a slow/crashed consumer never blocks data flow to the others.
 
 
+Why WebSocket over REST polling for Angel One?
+REST polling means actively asking "any new data?" on an interval — this hits rate limits and creates gaps between polls. WebSocket is a persistent push connection: Angel One sends ticks the instant they happen, with no polling delay and no rate-limit risk.
+
+
+
