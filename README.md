@@ -29,3 +29,13 @@ consumer   consumer      consumer        consumer
                                            quality checked)
 
 Each consumer belongs to its own Kafka consumer group, so all four read every message independently — one consumer crashing or lagging never blocks or affects the others.
+
+Tech stack
+
+Streaming platform: Apache Kafka 2.13-3.6.0, ZooKeeper
+Data source: Angel One SmartAPI (SmartWebSocketV2)
+Language: Python 3
+Kafka client: kafka-python
+Database: MySQL
+Config management: python-dotenv (.env + config.py)
+Logging: Python logging module, file-based
