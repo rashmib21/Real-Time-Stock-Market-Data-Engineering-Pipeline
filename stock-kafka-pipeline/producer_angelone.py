@@ -14,7 +14,8 @@ def json_serializer(value):
 
 producer=KafkaProducer(
 	bootstrap_servers=KAFKA_BROKER, #bootstrap means this is the first address the producer connects to Kafka i.e. localhost:9092 
-	value_serializer=json_serializer)
+	value_serializer=json_serializer,
+	acks=all)
 
 sws = None
 
