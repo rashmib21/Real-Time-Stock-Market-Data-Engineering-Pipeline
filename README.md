@@ -63,3 +63,6 @@ Kafka delivers every message to every distinct consumer group. Using one shared 
 
 
 
+Reliability and data quality features
+
+
