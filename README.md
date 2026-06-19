@@ -7,3 +7,5 @@ Stock markets generate continuous, high-frequency tick data that must be process
 
 This project implements that pipeline end-to-end using Apache Kafka as the central nervous system, decoupling data ingestion from data consumption so that a failure in one consumer (e.g. storage) never affects another (e.g. live dashboard).
 
+
+
