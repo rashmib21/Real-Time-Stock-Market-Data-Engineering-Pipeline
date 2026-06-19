@@ -2,6 +2,7 @@ from kafka import KafkaConsumer
 import mysql.connector
 import json
 from config import *
+from market_hours import is_market_open
 
 conn=mysql.connector.connect(
 	host=MYSQL_HOST,
