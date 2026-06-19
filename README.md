@@ -8,4 +8,22 @@ Stock markets generate continuous, high-frequency tick data that must be process
 This project implements that pipeline end-to-end using Apache Kafka as the central nervous system, decoupling data ingestion from data consumption so that a failure in one consumer (e.g. storage) never affects another (e.g. live dashboard).
 
 
+Architecture
 
+Angel One SmartAPI (WebSocket)  /  CSV (offline testing)
+                |
+                v
+        producer_angelone.py  (acks=all, idempotent)
+                |
+                v
+        Kafka Broker — topic: stock-ohlcv (3 partitions)
+                |
+   -------------------------------------------
+   |          |             |               |
+   v          v             v               v
+dashboard  analytics     alerts          storage
+consumer   consumer      consumer        consumer
+(live      (5-period     (price          (MySQL,
+ prices)    moving avg)   threshold)      market-hours
+                                           gated, data
+                                           quality checked)
