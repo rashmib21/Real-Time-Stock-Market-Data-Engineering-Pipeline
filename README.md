@@ -51,5 +51,12 @@ Decouples ingestion from processing. Four consumers can read the same stream ind
 Why WebSocket over REST polling for Angel One?
 REST polling means actively asking "any new data?" on an interval — this hits rate limits and creates gaps between polls. WebSocket is a persistent push connection: Angel One sends ticks the instant they happen, with no polling delay and no rate-limit risk.
 
+Why acks='all' on the producer?
+Guarantees a message is acknowledged only after all broker replicas have stored it, preventing silent data loss if a single broker fails right after a write.
+
+Why manual offset commits instead of auto-commit?
+Auto-commit marks a message as "processed" the moment it's received — even if the downstream write (e.g. to MySQL) fails afterward. Manual commit only advances the offset after the database write succeeds, so a crash mid-processing results in safe re-delivery instead of silent data loss.
+
+
 
 
