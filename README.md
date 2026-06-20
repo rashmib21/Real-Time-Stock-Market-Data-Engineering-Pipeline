@@ -8,3 +8,4 @@ This pipeline streams live equity tick data (Open, High, Low, Close, Volume) fro
 
 The core engineering goal was decoupling: every downstream service reads the same stream without coordinating with the producer or with each other, so a failure in one — a slow database write, a dropped connection — never blocks or degrades the rest.
 
+🚀 Key Facts
