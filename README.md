@@ -17,4 +17,6 @@ The core engineering goal was decoupling: every downstream service reads the sam
 🕒 Market-hours aware — storage consumer knows NSE trading hours and avoids duplicate post-close writes
 📝 Structured logging to pipeline.log for every consumer (INFO / WARNING / ERROR)
 
+🛠️ Tech Stack
+
 
